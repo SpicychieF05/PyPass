@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="https://res.cloudinary.com/dlxybta5a/image/upload/v1759338153/pay-pass-logo_qekpsy.png" alt="PyPass Logo" width="200">
+</div>
+
 # PyPass - Offline Password Generator
 
 🔐 **For End Users**: Looking to use PyPass? Jump to the [User Manual](#-user-manual) for complete installation and usage instructions.
