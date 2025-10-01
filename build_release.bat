@@ -270,7 +270,8 @@ echo   📄 dist\PyPass.exe.sha256       - Security checksum
 echo   📦 dist\PyPass-windows-x64.zip  - ZIP package (optional)
 echo.
 echo %BLUE%File size summary:%NC%
-for %%F in ("dist\PyPass.exe") do echo   PyPass.exe: %%~zF bytes (%%~zF:~0,-6%%.%%~zF:~-6,2%% MB)
+set /a FILE_SIZE_MB=%FILE_SIZE% / 1048576
+echo   PyPass.exe: %FILE_SIZE% bytes (~%FILE_SIZE_MB% MB)
 
 if exist "dist\PyPass-windows-x64.zip" (
     for %%F in ("dist\PyPass-windows-x64.zip") do echo   ZIP package: %%~zF bytes
