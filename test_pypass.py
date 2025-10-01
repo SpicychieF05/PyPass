@@ -1,124 +1,103 @@
 #!/usr/bin/env python3
-"""
-Test script to verify PyPass functionality
-"""
+"""Test suite validating PyPass password generation."""
+
+import pytest
 
 from src.password_generator import SecurePasswordGenerator, PersonalInfo, PasswordOptions
 
 
-def test_password_generation():
-    """Test basic password generation functionality"""
-    print("Testing PyPass Core Functionality...")
+def _build_generator(personal_info: PersonalInfo, options: PasswordOptions) -> SecurePasswordGenerator:
+    generator = SecurePasswordGenerator()
+    generator.set_personal_info(personal_info)
+    generator.set_options(options)
+    return generator
 
-    # Create test personal info
+
+def test_password_generation():
     personal_info = PersonalInfo(
         first_name="John",
         last_name="Doe",
         birth_date="01-01-1990",
         current_date="01-10-2025",
         platform="TestPlatform",
-        city="TestCity"
+        city="TestCity",
     )
 
-    # Create password options
     options = PasswordOptions()
     options.length = 16
 
-    # Create generator
-    generator = SecurePasswordGenerator()
-    generator.set_personal_info(personal_info)
-    generator.set_options(options)
+    generator = _build_generator(personal_info, options)
+    password = generator.generate_password()
 
-    # Test password generation
-    try:
-        password = generator.generate_password()
-        print(f"✓ Password generated successfully: {password}")
-        print(f"✓ Password length: {len(password)}")
+    assert len(password) == options.length
 
-        # Test strength assessment
-        strength_label, strength_score = generator.assess_strength(password)
-        print(
-            f"✓ Strength assessment: {strength_label} ({strength_score:.1f}%)")
+    strength_label, strength_score = generator.assess_strength(password)
+    assert strength_label in {"Very Strong", "Strong", "Medium"}
+    assert 0 <= strength_score <= 100
 
-        # Test entropy calculation
-        entropy = generator.calculate_entropy(password)
-        print(f"✓ Shannon entropy: {entropy:.2f}")
-
-        return True
-
-    except Exception as e:
-        print(f"✗ Error during password generation: {e}")
-        return False
+    entropy = generator.calculate_entropy(password)
+    assert entropy > 0
 
 
-def test_character_sets():
-    """Test different character set combinations"""
-    print("\nTesting Character Set Combinations...")
-
+@pytest.mark.parametrize(
+    "options_kwargs",
+    [
+        {"include_uppercase": True, "include_lowercase": True,
+            "include_numbers": True, "include_special": True},
+        {"include_uppercase": True, "include_lowercase": True,
+            "include_numbers": True, "include_special": False},
+        {"include_uppercase": False, "include_lowercase": True,
+            "include_numbers": True, "include_special": False},
+        {"include_uppercase": True, "include_lowercase": False,
+            "include_numbers": True, "include_special": True},
+    ],
+)
+def test_character_sets(options_kwargs):
     personal_info = PersonalInfo(
         first_name="Test",
         last_name="User",
         birth_date="15-06-1985",
         current_date="01-10-2025",
         platform="TestApp",
-        city="TestTown"
+        city="TestTown",
     )
 
-    generator = SecurePasswordGenerator()
-    generator.set_personal_info(personal_info)
+    options = PasswordOptions()
+    options.length = 12
+    options.include_uppercase = options_kwargs["include_uppercase"]
+    options.include_lowercase = options_kwargs["include_lowercase"]
+    options.include_numbers = options_kwargs["include_numbers"]
+    options.include_special = options_kwargs["include_special"]
 
-    # Test different combinations
-    test_cases = [
-        {"uppercase": True, "lowercase": True, "numbers": True, "special": True},
-        {"uppercase": True, "lowercase": True, "numbers": True, "special": False},
-        {"uppercase": False, "lowercase": True, "numbers": True, "special": False},
-        {"uppercase": True, "lowercase": False, "numbers": True, "special": True},
-    ]
+    generator = _build_generator(personal_info, options)
+    password = generator.generate_password()
 
-    for i, case in enumerate(test_cases):
-        options = PasswordOptions()
-        options.include_uppercase = case["uppercase"]
-        options.include_lowercase = case["lowercase"]
-        options.include_numbers = case["numbers"]
-        options.include_special = case["special"]
-        options.length = 12
-
-        generator.set_options(options)
-
-        try:
-            password = generator.generate_password()
-            print(f"✓ Test case {i+1}: {password}")
-        except Exception as e:
-            print(f"✗ Test case {i+1} failed: {e}")
-            return False
-
-    return True
+    assert len(password) == options.length
+    if options.include_uppercase:
+        assert any(c.isupper() for c in password)
+    if options.include_lowercase:
+        assert any(c.islower() for c in password)
+    if options.include_numbers:
+        assert any(c.isdigit() for c in password)
+    if options.include_special:
+        assert any(c in "!@#$%^&*()_+-=[]{}|;:,.<>?" for c in password)
 
 
 def test_validation():
-    """Test input validation"""
-    print("\nTesting Input Validation...")
-
-    # Test incomplete personal info
-    incomplete_info = PersonalInfo(first_name="John")  # Missing other fields
+    incomplete_info = PersonalInfo(first_name="John")
     generator = SecurePasswordGenerator()
     generator.set_personal_info(incomplete_info)
 
-    try:
-        password = generator.generate_password()
-        print("✗ Should have failed with incomplete info")
-        return False
-    except ValueError as e:
-        print(f"✓ Correctly caught incomplete info: {e}")
+    with pytest.raises(ValueError):
+        generator.generate_password()
 
-    # Test no character types selected
     complete_info = PersonalInfo(
         first_name="John",
         last_name="Doe",
         birth_date="01-01-1990",
         current_date="01-10-2025",
         platform="Test",
-        city="TestCity"
+        city="TestCity",
     )
 
     options = PasswordOptions()
@@ -130,29 +109,33 @@ def test_validation():
     generator.set_personal_info(complete_info)
     generator.set_options(options)
 
-    try:
-        password = generator.generate_password()
-        print("✗ Should have failed with no character types")
-        return False
-    except ValueError as e:
-        print(f"✓ Correctly caught no character types: {e}")
-
-    return True
+    with pytest.raises(ValueError):
+        generator.generate_password()
 
 
-if __name__ == "__main__":
-    print("PyPass Verification Test")
-    print("=" * 50)
+def test_deterministic_generation():
+    personal_info = PersonalInfo(
+        first_name="Alice",
+        last_name="Smith",
+        birth_date="12-08-1992",
+        current_date="02-10-2025",
+        platform="Email",
+        city="London",
+    )
 
-    success = True
-    success &= test_password_generation()
-    success &= test_character_sets()
-    success &= test_validation()
+    options = PasswordOptions()
+    options.length = 14
 
-    print("\n" + "=" * 50)
-    if success:
-        print("✓ All tests passed! PyPass is working correctly.")
-    else:
-        print("✗ Some tests failed. Please check the issues above.")
+    generator = _build_generator(personal_info, options)
+    password_first = generator.generate_password()
+    password_second = generator.generate_password()
 
-    print("=" * 50)
+    assert password_first == password_second
+
+    new_options = PasswordOptions()
+    new_options.length = 14
+    new_options.include_special = False
+    generator.set_options(new_options)
+    password_third = generator.generate_password()
+
+    assert password_third != password_first
