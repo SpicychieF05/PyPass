@@ -52,7 +52,7 @@ exe = EXE(
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
-    upx=True,
+    upx=True,  # Enable UPX compression for smaller file size
     upx_exclude=[],
     runtime_tmpdir=None,
     console=False,  # Set to False for windowed application
@@ -62,5 +62,5 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
     icon=None,  # Add icon path here if you have one: icon='icon.ico'
-    version_file=None,  # Add version file if needed
+    version_file='version_info.txt',  # Windows version information
 )
