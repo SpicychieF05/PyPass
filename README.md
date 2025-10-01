@@ -1,8 +1,34 @@
 # PyPass - Offline Password Generator
 
+## Table of Contents
+- [Overview](#overview)
+- [Key Features](#-key-features)
+- [Security Features](#-security-features)
+- [Requirements](#-requirements)
+- [Quick Start](#-quick-start)
+- [Building from Source](#️-building-from-source)
+- [How to Use](#-how-to-use)
+- [Security Considerations](#-security-considerations)
+- [Project Structure](#-project-structure)
+- [Development](#️-development)
+- [Troubleshooting](#-troubleshooting)
+- [Contributing](#-contributing)
+- [Support](#-support)
+
 ## Overview
 
-PyPass is a secure, offline password generator desktop application built with Python and Tkinter. It generates cryptographically strong passwords by combining user personal information with secure random entropy, ensuring both uniqueness and security.
+PyPass is a secure, offline password generator desktop application built with Python and Tkinter. It generates cryptographically strong passwords by combining user personal information with secure random entropy, ensuring both uniqueness and security without requiring internet connectivity.
+
+## ✨ Key Features
+
+- 🔒 **100% Offline** - No internet required, complete privacy
+- 🎯 **Personalized Security** - Uses your information to create unique passwords
+- 🛡️ **Cryptographically Secure** - Built with Python's `secrets` library
+- 📋 **Smart Clipboard** - Auto-clears after 30 seconds for security
+- 💾 **Optional File Export** - Save passwords when needed
+- 🎨 **User-Friendly GUI** - Simple, intuitive interface
+- ⚡ **Lightweight** - Minimal system resources required
+- 🔧 **Highly Customizable** - Control length, character types, and complexity
 
 ## 🔒 Security Features
 
@@ -16,35 +42,52 @@ PyPass is a secure, offline password generator desktop application built with Py
 ## 📋 Requirements
 
 ### System Requirements
-- Windows 10 or later
-- Python 3.11+ (for development)
+- Windows 10 or later (primary platform)
+- Linux/macOS (compatible)
+- Python 3.11+ (for development) - **Tested with Python 3.13.5**
 - 50MB free disk space
 
 ### For Development
-- Python 3.11+
-- tkinter (usually included with Python)
-- PyInstaller 5.13.0+ (for building executable)
+- Python 3.11+ (recommended: Python 3.13.5)
+- tkinter (included with Python standard installation)
+- PyInstaller 6.16.0+ (for building executable)
+- Virtual environment (recommended for development)
 
 ## 🚀 Quick Start
 
-### Using Pre-built Executable
-1. Download `PyPass.exe` from releases
-2. Run the executable directly
-3. Fill in your personal information
-4. Customize password options
-5. Click "Generate Password"
+### Option 1: Using Pre-built Executable (Easiest)
+1. Download `PyPass.exe` from the [latest release](https://github.com/SpicychieF05/PyPass/releases/latest)
+2. Double-click to run the application directly
+3. Fill in your personal information in the form
+4. Customize password settings as needed
+5. Click "Generate Password" to create your secure password
 
-### Running from Source
+### Option 2: Running from Source (For Developers)
 ```bash
-# Clone or download the project
+# Clone the repository
+git clone https://github.com/SpicychieF05/PyPass.git
 cd PyPass
 
-# Install dependencies (optional, for building only)
+# Optional: Create virtual environment (recommended)
+python -m venv .venv
+# On Windows:
+.venv\Scripts\activate
+# On Linux/macOS:
+source .venv/bin/activate
+
+# Install build dependencies (only needed for building executable)
 pip install -r requirements.txt
 
-# Run the application
+# Run the application directly
 python main.py
 ```
+
+### First Time Setup
+1. **Launch PyPass** - Run the executable or `python main.py`
+2. **Enter Personal Information** - Fill all required fields for password uniqueness
+3. **Configure Options** - Choose password length and character types
+4. **Generate** - Click "Generate Password" to create your secure password
+5. **Copy & Use** - Copy to clipboard or save to file as needed
 
 ## 🏗️ Building from Source
 
@@ -60,17 +103,23 @@ chmod +x build_simple.sh
 
 ### Method 2: Manual PyInstaller
 ```bash
-# Install PyInstaller
-pip install pyinstaller>=5.13.0
+# Ensure you're in the project directory
+cd PyPass
 
-# Build using spec file
+# Install PyInstaller (if not already installed)
+pip install pyinstaller>=6.16.0
+
+# Build using spec file (recommended - includes optimized settings)
 pyinstaller build/pypass.spec --clean --noconfirm
 
-# Or build with command line
+# Alternative: Build with command line (basic configuration)
 pyinstaller --onefile --windowed --name PyPass main.py
-```
 
-The executable will be created in the `dist/` directory.
+# The executable will be created in the dist/ directory
+# Test the build:
+./dist/PyPass.exe  # Windows
+./dist/PyPass      # Linux/macOS
+```
 
 ### 📦 Publishing a Release on GitHub
 
@@ -212,21 +261,60 @@ The modular design allows easy extension:
 ### Common Issues
 
 **"Personal information is incomplete"**
-- Ensure all fields are filled in
-- Check date format is dd-mm-yyyy
+- Ensure all fields are filled in completely
+- Check date format is exactly dd-mm-yyyy (e.g., 25-12-1990)
+- Platform/Service field cannot be empty
 
 **"No character types selected"**  
-- Select at least one character type checkbox
+- Select at least one character type checkbox (uppercase, lowercase, numbers, or special characters)
+- Default selection includes all character types
 
 **Build fails with PyInstaller**
-- Update to Python 3.11+
+- Update to Python 3.11+ (recommended: 3.13.5)
 - Install latest PyInstaller: `pip install --upgrade pyinstaller`
-- Try the simple build script instead of spec file
+- Clear any existing build artifacts: `rm -rf build/ dist/`
+- Try the build script instead of manual commands: `build_exe.bat` (Windows) or `./build_simple.sh` (Linux/macOS)
+- Ensure virtual environment is activated if using one
 
 **Application won't start**
-- Ensure all dependencies are available
-- Check Python version compatibility
-- Run from command line to see error messages
+- **From source**: Ensure all dependencies are available and Python version is compatible
+- **Executable**: Try running from command prompt to see error messages
+- **Windows**: Check if Windows Defender or antivirus is blocking the executable
+- **Permissions**: Ensure you have write permissions in the application directory
+
+**Memory or performance issues**
+- Close other applications if memory is limited
+- First password generation may take 1-2 seconds (normal)
+- If application freezes, try restarting
+
+**Clipboard not working**
+- Ensure no other applications are accessing clipboard
+- Try the "Show/Hide" button to verify password generation is working
+- Copy function requires tkinter clipboard support
+
+### Development Issues
+
+**Import errors when running from source**
+```bash
+# Ensure you're in the correct directory
+cd PyPass
+
+# Check Python path includes current directory
+python -c "import sys; print(sys.path)"
+
+# Run with explicit module path
+python -m main
+```
+
+**Virtual environment issues**
+```bash
+# Recreate virtual environment
+rm -rf .venv
+python -m venv .venv
+# Activate and reinstall dependencies
+.venv\Scripts\activate  # Windows
+pip install -r requirements.txt
+```
 
 ### Performance Notes
 - First password generation may take slightly longer due to entropy pool creation
@@ -241,6 +329,28 @@ This project is open source. Feel free to modify and distribute according to you
 
 Contributions are welcome! Please ensure any changes maintain the security and offline-only nature of the application.
 
+### Development Setup
+1. Fork the repository
+2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/PyPass.git`
+3. Create a virtual environment: `python -m venv .venv`
+4. Activate it and install dependencies: `pip install -r requirements.txt`
+5. Make your changes and test thoroughly
+6. Submit a pull request
+
+### Code Guidelines
+- Maintain compatibility with Python 3.11+
+- Preserve security-first design principles
+- Keep the application completely offline
+- Follow existing code style and structure
+- Add appropriate comments for complex logic
+- Test all changes before submitting
+
+### Security Considerations for Contributors
+- Never add network connectivity or external dependencies
+- Avoid storing sensitive data persistently
+- Maintain cryptographic security standards
+- Test against common attack vectors
+
 ## ⚠️ Disclaimer
 
 This software is provided as-is. While designed with security best practices, users should evaluate its suitability for their specific use cases. The developers are not responsible for any security breaches or password compromises.
@@ -248,9 +358,22 @@ This software is provided as-is. While designed with security best practices, us
 ## 📞 Support
 
 For issues or questions:
-1. Check this README for common solutions
-2. Review the source code for understanding
-3. Test with the development version before building
+
+### Self-Help Resources
+1. **Check this README** - Most common issues are covered in the troubleshooting section
+2. **Review the source code** - The application is open source for transparency
+3. **Test with development version** - Run from source to get detailed error messages
+
+### Reporting Issues
+1. **GitHub Issues** - [Create an issue](https://github.com/SpicychieF05/PyPass/issues) for bugs or feature requests
+2. **Include Details** - Provide OS version, Python version, and error messages
+3. **Security Issues** - For security vulnerabilities, please create a private issue
+
+### Getting Help
+- Check existing GitHub issues for similar problems
+- Include your system information and exact error messages
+- Describe steps to reproduce the issue
+- Mention if you're using the executable or running from source
 
 ---
 
