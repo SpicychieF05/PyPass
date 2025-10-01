@@ -6,7 +6,6 @@ Tkinter-based user interface with modern styling and accessibility features
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 import threading
-import time
 import re
 from datetime import datetime
 from .password_generator import SecurePasswordGenerator, PersonalInfo, PasswordOptions
