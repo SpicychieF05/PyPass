@@ -118,8 +118,11 @@ python -m venv .venv
 # On Linux/macOS:
 source .venv/bin/activate
 
-# Install build dependencies (only needed for building executable)
+# Install build/runtime dependencies
 pip install -r requirements.txt
+
+# Install additional development/test tooling
+pip install -r requirements-dev.txt
 
 # Run the application directly
 python main.py
