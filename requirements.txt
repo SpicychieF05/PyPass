@@ -7,8 +7,5 @@
 # - hashlib (for entropy calculations)
 # - datetime, os, threading, re, math (standard library)
 
-# Image processing dependency:
-Pillow>=10.0.0
-
 # Build dependency only:
 pyinstaller>=5.13.0
