@@ -3,12 +3,10 @@ Password Generator Module
 Cryptographically secure password generation with user input integration
 """
 
-import secrets
 import string
 import hashlib
 import math
-from datetime import datetime
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 
 class PasswordOptions:
@@ -21,6 +19,17 @@ class PasswordOptions:
         self.include_numbers = True
         self.include_special = True
         self.exclude_ambiguous = True  # Exclude 0, O, l, I, 1
+
+    def fingerprint(self) -> str:
+        """Return a deterministic fingerprint of the option combination."""
+        return "|".join([
+            f"len={self.length}",
+            f"upper={int(self.include_uppercase)}",
+            f"lower={int(self.include_lowercase)}",
+            f"digits={int(self.include_numbers)}",
+            f"special={int(self.include_special)}",
+            f"exclude_ambiguous={int(self.exclude_ambiguous)}",
+        ])
 
     def get_character_set(self) -> str:
         """Build character set based on options"""
@@ -74,6 +83,36 @@ class SecurePasswordGenerator:
         self.personal_info = PersonalInfo()
         self.options = PasswordOptions()
 
+    class _DeterministicPRNG:
+        """Deterministic pseudo-random number generator based on SHA-512."""
+
+        def __init__(self, seed_material: bytes):
+            self._seed_material = seed_material
+            self._buffer = bytearray()
+            self._counter = 0
+
+        def _refill(self):
+            counter_bytes = self._counter.to_bytes(8, 'big', signed=False)
+            block = hashlib.sha512(
+                self._seed_material + counter_bytes).digest()
+            self._buffer.extend(block)
+            self._counter += 1
+
+        def next_bytes(self, length: int) -> bytes:
+            if length <= 0:
+                raise ValueError("Length must be positive")
+            while len(self._buffer) < length:
+                self._refill()
+            result = self._buffer[:length]
+            del self._buffer[:length]
+            return bytes(result)
+
+        def next_int(self, modulo: int) -> int:
+            if modulo <= 0:
+                raise ValueError("Modulo must be positive")
+            value = int.from_bytes(self.next_bytes(4), 'big', signed=False)
+            return value % modulo
+
     def set_personal_info(self, personal_info: PersonalInfo):
         """Set personal information for password generation"""
         self.personal_info = personal_info
@@ -82,61 +121,65 @@ class SecurePasswordGenerator:
         """Set password generation options"""
         self.options = options
 
-    def _create_entropy_pool(self) -> str:
-        """Create a large entropy pool mixing personal info and secure randomness"""
-        # Start with cryptographically secure random bytes
-        secure_random = secrets.token_bytes(64)
+    def _build_prng(self) -> "SecurePasswordGenerator._DeterministicPRNG":
+        """Construct a deterministic PRNG based on personal info and options."""
+        if not self.personal_info.is_complete():
+            raise ValueError("Personal information is incomplete")
 
-        # Mix with personal info hash for uniqueness
-        personal_seed = self.personal_info.get_entropy_seed()
+        seed_basis = self.personal_info.get_entropy_seed()
+        option_fingerprint = self.options.fingerprint()
 
-        # Combine and hash multiple times for good mixing
-        combined = secure_random + personal_seed.encode('utf-8')
+        seed_material = hashlib.pbkdf2_hmac(
+            'sha512',
+            seed_basis.encode('utf-8'),
+            option_fingerprint.encode('utf-8'),
+            200_000,
+            dklen=64
+        )
 
-        # Multiple rounds of hashing to increase entropy mixing
-        for _ in range(1000):  # 1000 rounds of mixing
-            combined = hashlib.sha512(combined).digest()
+        return self._DeterministicPRNG(seed_material)
 
-        return combined.hex()
-
-    def _ensure_character_requirements(self, password: str, charset: str) -> str:
+    def _ensure_character_requirements(self, password: List[str], charset: str,
+                                       rng: "SecurePasswordGenerator._DeterministicPRNG") -> List[str]:
         """Ensure password meets character type requirements"""
         # Get required character types
         required_chars = []
 
         if self.options.include_lowercase:
             lowercase = [c for c in charset if c in string.ascii_lowercase]
-            if lowercase and not any(c in password for c in lowercase):
-                required_chars.append(secrets.choice(lowercase))
+            if lowercase and not any(c in lowercase for c in password):
+                required_chars.append(lowercase)
 
         if self.options.include_uppercase:
             uppercase = [c for c in charset if c in string.ascii_uppercase]
-            if uppercase and not any(c in password for c in uppercase):
-                required_chars.append(secrets.choice(uppercase))
+            if uppercase and not any(c in uppercase for c in password):
+                required_chars.append(uppercase)
 
         if self.options.include_numbers:
             numbers = [c for c in charset if c in string.digits]
-            if numbers and not any(c in password for c in numbers):
-                required_chars.append(secrets.choice(numbers))
+            if numbers and not any(c in numbers for c in password):
+                required_chars.append(numbers)
 
         if self.options.include_special:
             special = [c for c in charset if c in "!@#$%^&*()_+-=[]{}|;:,.<>?"]
-            if special and not any(c in password for c in special):
-                required_chars.append(secrets.choice(special))
+            if special and not any(c in special for c in password):
+                required_chars.append(special)
 
-        # Replace random positions with required characters
-        password_list = list(password)
-        for req_char in required_chars:
-            if len(password_list) > 0:
-                pos = secrets.randbelow(len(password_list))
-                password_list[pos] = req_char
+        # Replace deterministic positions with required characters
+        for char_pool in required_chars:
+            if not password:
+                break
+            position = rng.next_int(len(password))
+            replacement = char_pool[rng.next_int(len(char_pool))]
+            password[position] = replacement
 
-        return ''.join(password_list)
+        return password
 
-    def _avoid_obvious_patterns(self, password: str) -> str:
+    def _avoid_obvious_patterns(self, password: List[str], charset: str,
+                                rng: "SecurePasswordGenerator._DeterministicPRNG") -> List[str]:
         """Check and modify password to avoid obvious personal info patterns"""
         # Convert to lowercase for pattern checking
-        password_lower = password.lower()
+        password_lower = ''.join(password).lower()
 
         # Patterns to avoid
         patterns_to_avoid = [
@@ -152,57 +195,39 @@ class SecurePasswordGenerator:
         # Remove empty patterns
         patterns_to_avoid = [p for p in patterns_to_avoid if len(p) >= 3]
 
-        # Check for patterns and regenerate if found
+        # Check for patterns and deterministically adjust if found
         for pattern in patterns_to_avoid:
-            if pattern in password_lower:
-                # Regenerate with different entropy if pattern found
-                charset = self.options.get_character_set()
-                new_password = ""
-                entropy_pool = self._create_entropy_pool()
-
-                for i in range(self.options.length):
-                    # Use different position in entropy pool
-                    entropy_index = (
-                        hash(entropy_pool + str(i + 100)) % len(charset))
-                    new_password += charset[entropy_index % len(charset)]
-
-                # Recursive check
-                return self._avoid_obvious_patterns(new_password)
+            while pattern and pattern in password_lower:
+                position = rng.next_int(len(password))
+                replacement = charset[rng.next_int(len(charset))]
+                password[position] = replacement
+                password_lower = ''.join(password).lower()
 
         return password
 
     def generate_password(self) -> str:
         """Generate a secure password based on personal info and options"""
-        if not self.personal_info.is_complete():
-            raise ValueError("Personal information is incomplete")
-
         charset = self.options.get_character_set()
         if not charset:
             raise ValueError("No character types selected")
 
-        # Create entropy pool
-        entropy_pool = self._create_entropy_pool()
+        if not 8 <= self.options.length <= 128:
+            raise ValueError(
+                "Password length must be between 8 and 128 characters")
 
-        # Generate password using entropy pool
-        password = ""
-        for i in range(self.options.length):
-            # Use different parts of entropy pool for each character
-            entropy_segment = entropy_pool[i * 4:(i + 1) * 4]
-            if len(entropy_segment) < 4:
-                entropy_segment = entropy_pool[i % (
-                    len(entropy_pool) - 4):i % (len(entropy_pool) - 4) + 4]
+        rng = self._build_prng()
 
-            # Convert to integer and use for character selection
-            char_index = int(entropy_segment, 16) % len(charset)
-            password += charset[char_index]
+        # Generate password deterministically using PRNG
+        password_chars = [charset[rng.next_int(len(charset))]
+                          for _ in range(self.options.length)]
 
-        # Ensure character requirements are met
-        password = self._ensure_character_requirements(password, charset)
+        # Ensure requirements and adjust patterns deterministically
+        password_chars = self._ensure_character_requirements(
+            password_chars, charset, rng)
+        password_chars = self._avoid_obvious_patterns(
+            password_chars, charset, rng)
 
-        # Avoid obvious patterns
-        password = self._avoid_obvious_patterns(password)
-
-        return password
+        return ''.join(password_chars)
 
     def calculate_entropy(self, password: str) -> float:
         """Calculate Shannon entropy of password"""
