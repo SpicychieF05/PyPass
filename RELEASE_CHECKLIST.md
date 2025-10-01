@@ -4,6 +4,10 @@
 
 ### Step 1: Pre-Release Preparation
 ```bash
+# 0. Refresh dev environment and run tests
+pip install -r requirements-dev.txt
+pytest
+
 # 1. Ensure all code is committed
 git add .
 git commit -m "Prepare for v1.0.0 release"
