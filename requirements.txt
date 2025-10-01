@@ -1,0 +1,11 @@
+# PyPass - Offline Password Generator
+# Requirements for building the application
+
+# Core application uses only Python standard library:
+# - tkinter (GUI framework - included with Python)
+# - secrets (cryptographically secure random numbers)
+# - hashlib (for entropy calculations)
+# - datetime, os, threading, re, math (standard library)
+
+# Build dependency only:
+pyinstaller>=5.13.0
