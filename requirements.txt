@@ -9,3 +9,4 @@
 
 # Build dependency only:
 pyinstaller>=5.13.0
+pytest 
