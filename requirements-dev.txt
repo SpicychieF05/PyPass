@@ -1,0 +1,3 @@
+# Additional development dependencies for PyPass
+-r requirements.txt
+pytest>=8.0.0
