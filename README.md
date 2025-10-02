@@ -148,11 +148,8 @@ python -m venv .venv
 # On Linux/macOS:
 source .venv/bin/activate
 
-# Install build/runtime dependencies
+# Install build/runtime dependencies (includes pytest for testing)
 pip install -r requirements.txt
-
-# Install additional development/test tooling
-pip install -r requirements-dev.txt
 
 # Run the application directly
 python main.py
@@ -166,17 +163,21 @@ python main.py
 
 ## 🏗️ Building from Source
 
-### Method 1: Using Build Script (Recommended)
+### Using Build Scripts (Recommended)
 ```bash
-# Windows
-build_exe.bat
+# Ultra-safe build (5/72 AV detections - RECOMMENDED)
+build_ultra_safe.bat
 
-# Linux/macOS
-chmod +x build_simple.sh
-./build_simple.sh
+# Safe build (onedir mode)
+build_safe.bat
+
+# Standard single-file build
+build_release.bat
 ```
 
-### Method 2: Manual PyInstaller
+See [BUILD_GUIDE.md](BUILD_GUIDE.md) for detailed build instructions and antivirus optimization.
+
+### Manual PyInstaller
 ```bash
 # Ensure you're in the project directory
 cd PyPass
@@ -201,8 +202,9 @@ pyinstaller --onefile --windowed --name PyPass main.py
 1. **Create a clean build**
   - Activate your virtual environment (if any).
   - Install build deps: `pip install -r requirements.txt`.
-  - Run the Windows build script: `build_exe.bat` (or `python -m PyInstaller build/pypass.spec --clean --noconfirm`).
-  - Verify `dist/PyPass.exe` launches correctly on a clean machine or Windows sandbox.
+  - Run the build script: `build_ultra_safe.bat` (recommended) or `build_release.bat`.
+  - Verify the executable launches correctly on a clean machine or Windows sandbox.
+  - See [BUILD_GUIDE.md](BUILD_GUIDE.md) for antivirus optimization details.
 
 2. **Prepare release artifacts**
   - Optionally compress the executable: `zip -j PyPass-windows-x64.zip dist/PyPass.exe`.
@@ -215,7 +217,7 @@ pyinstaller --onefile --windowed --name PyPass main.py
 3. **Publish the release on GitHub**
   - Push your latest changes and tag the commit, e.g. `git tag v1.0.0` followed by `git push --tags`.
   - Open *GitHub → Releases → Draft a new release*.
-  - Select the tag, add a title (e.g. `PyPass v1.0.0`), and paste the release notes.
+  - Select the tag, add a title (e.g. `PyPass v1.0.0`), vand paste the release notes.
   - Attach `PyPass.exe` (and the optional `.zip` plus checksum file).
   - Mark the release as pre-release if you want early testers first.
 
@@ -629,17 +631,31 @@ The strength indicator shows:
 
 ```
 PyPass/
-├── main.py                 # Application entry point
-├── requirements.txt        # Python dependencies
-├── build_exe.bat          # Windows build script
-├── build_simple.sh        # Linux/macOS build script
-├── README.md              # This documentation
+├── main.py                    # Application entry point
+├── version.py                 # Version information
+├── requirements.txt           # Python dependencies (PyInstaller, pytest)
+├── test_pypass.py            # Test suite
+├── README.md                  # Main documentation
+├── BUILD_GUIDE.md            # Build and distribution guide
+├── ANTIVIRUS_README.md       # AV detection explanation
+├── SECURITY.md               # Security considerations
+├── AV_OPTIMIZATION_RESULTS.md # Latest AV test results
+├── build_ultra_safe.bat      # Ultra-safe build script (RECOMMENDED)
+├── build_safe.bat            # Safe onedir build script
+├── build_release.bat         # Standard single-file build script
 ├── src/
-│   ├── gui.py             # Tkinter GUI implementation
-│   └── password_generator.py  # Core password generation logic
+│   ├── __init__.py           # Package initialization
+│   ├── gui.py                # Tkinter GUI implementation
+│   └── password_generator.py # Core password generation logic
+├── assets/
+│   └── pay-pass-logo.ico     # Application icon
 ├── build/
-│   └── pypass.spec        # PyInstaller configuration
-└── dist/                  # Built executables (created during build)
+│   ├── pypass.spec           # PyInstaller spec (single-file)
+│   ├── pypass_onedir.spec    # PyInstaller spec (directory mode)
+│   └── version_info.txt      # Windows version metadata
+├── RELEASE_NOTES/
+│   └── v1.0.0.md            # Release notes
+└── dist/                     # Built executables (created during build)
 ```
 
 ## 🛠️ Development
@@ -678,9 +694,10 @@ The modular design allows easy extension:
 **Build fails with PyInstaller**
 - Update to Python 3.11+ (recommended: 3.13.5)
 - Install latest PyInstaller: `pip install --upgrade pyinstaller`
-- Clear any existing build artifacts: `rm -rf build/ dist/`
-- Try the build script instead of manual commands: `build_exe.bat` (Windows) or `./build_simple.sh` (Linux/macOS)
+- Clear any existing build artifacts: `rm -rf build/pypass_onedir/ dist/`
+- Use the provided build scripts: `build_ultra_safe.bat` (recommended), `build_safe.bat`, or `build_release.bat`
 - Ensure virtual environment is activated if using one
+- See [BUILD_GUIDE.md](BUILD_GUIDE.md) for detailed troubleshooting
 
 **Application won't start**
 - **From source**: Ensure all dependencies are available and Python version is compatible

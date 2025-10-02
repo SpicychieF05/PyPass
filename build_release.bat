@@ -124,18 +124,18 @@ if errorlevel 1 (
 )
 echo %GREEN%✓ Imports verified%NC%
 
-REM Run verification script if available
-if exist "final_verification.py" (
-    echo Running final verification...
-    python final_verification.py >nul 2>&1
+REM Run tests if available
+if exist "test_pypass.py" (
+    echo Running test suite...
+    python -m pytest test_pypass.py -v >nul 2>&1
     if errorlevel 1 (
-        echo %YELLOW%⚠ Verification script reported issues%NC%
-        echo   Check final_verification.py output for details
+        echo %YELLOW%⚠ Some tests failed%NC%
+        echo   Run 'pytest test_pypass.py -v' to see details
         echo   Continue build anyway? [Y/N]
         set /p CONTINUE=
         if /i "!CONTINUE!" neq "Y" exit /b 1
     ) else (
-        echo %GREEN%✓ Final verification passed%NC%
+        echo %GREEN%✓ All tests passed%NC%
     )
 )
 
