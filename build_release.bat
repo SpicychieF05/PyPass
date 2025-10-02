@@ -44,17 +44,12 @@ if errorlevel 1 (
     if /i "!CONTINUE!" neq "Y" exit /b 1
 )
 
-REM Check virtual environment (recommended)
-python -c "import sys; print('venv' if hasattr(sys, 'real_prefix') or (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix) else 'global')" > temp_env_check.txt
-set /p ENV_TYPE=<temp_env_check.txt
-del temp_env_check.txt
-
-if "%ENV_TYPE%"=="global" (
+REM Check virtual environment (recommended) - simplified check
+python -c "import sys; sys.exit(0 if (hasattr(sys, 'real_prefix') or (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix)) else 1)" >nul 2>&1
+if errorlevel 1 (
     echo %YELLOW%⚠ Warning: Running in global Python environment%NC%
     echo   Virtual environment recommended for clean builds
-    echo   Continue anyway? [Y/N]
-    set /p CONTINUE=
-    if /i "!CONTINUE!" neq "Y" exit /b 1
+    echo %GREEN%✓ Continuing with global environment%NC%
 ) else (
     echo %GREEN%✓ Virtual environment detected%NC%
 )
