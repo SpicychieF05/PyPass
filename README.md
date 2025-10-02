@@ -30,6 +30,12 @@
 - [Contributing](#-contributing)
 - [Support](#-support)
 
+## Download
+
+Get the latest Windows executable from the GitHub Releases page:
+
+[Download PyPass (latest release)](https://github.com/SpicychieF05/PyPass/releases/latest)
+
 ## Overview
 
 PyPass is a secure, offline password generator desktop application built with Python and Tkinter. It generates cryptographically strong passwords by combining user personal information with secure random entropy, ensuring both uniqueness and security without requiring internet connectivity.
@@ -669,88 +675,3 @@ The modular design allows easy extension:
 - Copy function requires tkinter clipboard support
 
 ### Development Issues
-
-**Import errors when running from source**
-```bash
-# Ensure you're in the correct directory
-cd PyPass
-
-# Check Python path includes current directory
-python -c "import sys; print(sys.path)"
-
-# Run with explicit module path
-python -m main
-```
-
-**Virtual environment issues**
-```bash
-# Recreate virtual environment
-rm -rf .venv
-python -m venv .venv
-# Activate and reinstall dependencies
-.venv\Scripts\activate  # Windows
-pip install -r requirements.txt
-```
-
-### Performance Notes
-- First password generation may take slightly longer due to entropy pool creation
-- Subsequent generations are faster
-- Application memory usage is minimal (~10-20MB)
-
-## 📝 License
-
-This project is open source. Feel free to modify and distribute according to your needs.
-
-## 🤝 Contributing
-
-Contributions are welcome! Please ensure any changes maintain the security and offline-only nature of the application.
-
-### Development Setup
-1. Fork the repository
-2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/PyPass.git`
-3. Create a virtual environment: `python -m venv .venv`
-4. Activate it and install dependencies: `pip install -r requirements.txt`
-5. Make your changes and test thoroughly
-6. Submit a pull request
-
-### Code Guidelines
-- Maintain compatibility with Python 3.11+
-- Preserve security-first design principles
-- Keep the application completely offline
-- Follow existing code style and structure
-- Add appropriate comments for complex logic
-- Test all changes before submitting
-
-### Security Considerations for Contributors
-- Never add network connectivity or external dependencies
-- Avoid storing sensitive data persistently
-- Maintain cryptographic security standards
-- Test against common attack vectors
-
-## ⚠️ Disclaimer
-
-This software is provided as-is. While designed with security best practices, users should evaluate its suitability for their specific use cases. The developers are not responsible for any security breaches or password compromises.
-
-## 📞 Support
-
-For issues or questions:
-
-### Self-Help Resources
-1. **Check this README** - Most common issues are covered in the troubleshooting section
-2. **Review the source code** - The application is open source for transparency
-3. **Test with development version** - Run from source to get detailed error messages
-
-### Reporting Issues
-1. **GitHub Issues** - [Create an issue](https://github.com/SpicychieF05/PyPass/issues) for bugs or feature requests
-2. **Include Details** - Provide OS version, Python version, and error messages
-3. **Security Issues** - For security vulnerabilities, please create a private issue
-
-### Getting Help
-- Check existing GitHub issues for similar problems
-- Include your system information and exact error messages
-- Describe steps to reproduce the issue
-- Mention if you're using the executable or running from source
-
----
-
-**Remember**: Keep your personal information secure and use strong, unique passwords for all your accounts!
