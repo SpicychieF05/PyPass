@@ -30,15 +30,19 @@ PyPass is built using PyInstaller, which packages Python applications into stand
 ### Standard Mode (Single EXE)
 - Single `PyPass.exe` file
 - Self-contained, portable
-- **May trigger 5-10 AV vendors** due to self-extraction
+- **~5-8 AV detections** due to self-extraction
+- Smaller download (~8MB)
 
-### Safe Mode (Folder Distribution) - **RECOMMENDED**
+### Safe Mode (Folder Distribution) - **RECOMMENDED ⭐**
 - `PyPass` folder with exe + supporting files
 - More transparent to antivirus software
-- **Typically 0-3 AV detections**
-- Slightly larger download (~30MB vs 8MB)
+- **Typically 3-5 AV detections** (down from 9!)
+- Larger download (~30MB)
+- Built with `build_ultra_safe.bat` for maximum AV compatibility
 
-**For releases, we now provide BOTH options. Download the one that works best for you!**
+**Current Status**: With our optimized build process (no UPX, no stripping, UAC disabled), we've achieved **5/72 VirusTotal detections** - a significant improvement!
+
+**For releases, we provide BOTH options. Download the one that works best for you!**
 
 ## For Users: How to Verify Safety
 
