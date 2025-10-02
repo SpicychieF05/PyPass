@@ -36,6 +36,30 @@ Get the latest Windows executable from the GitHub Releases page:
 
 [Download PyPass (latest release)](https://github.com/SpicychieF05/PyPass/releases/latest)
 
+## Release — v1.0.0
+
+PyPass v1.0.0 is now available as a downloadable Windows executable. You can get the EXE from the Releases page and run it locally (no Python required).
+
+- Release page: https://github.com/SpicychieF05/PyPass/releases/latest
+- Direct download (exe): https://github.com/SpicychieF05/PyPass/releases/latest/download/PyPass.exe
+- Checksum (SHA256): included on the release page and in the repository as `dist/PyPass.exe.sha256`
+
+How to verify the download (Windows):
+
+PowerShell:
+
+```powershell
+Get-FileHash .\PyPass.exe -Algorithm SHA256
+```
+
+CMD:
+
+```cmd
+certutil -hashfile .\PyPass.exe SHA256
+```
+
+Note: This executable is unsigned. Windows SmartScreen or antivirus software may show warnings for new unsigned binaries. If you see a SmartScreen warning, click "More info → Run anyway" after verifying the checksum.
+
 ## Overview
 
 PyPass is a secure, offline password generator desktop application built with Python and Tkinter. It generates cryptographically strong passwords by combining user personal information with secure random entropy, ensuring both uniqueness and security without requiring internet connectivity.
@@ -673,5 +697,3 @@ The modular design allows easy extension:
 - Ensure no other applications are accessing clipboard
 - Try the "Show/Hide" button to verify password generation is working
 - Copy function requires tkinter clipboard support
-
-### Development Issues
