@@ -52,7 +52,7 @@ exe = EXE(
     name='PyPass',
     debug=False,
     bootloader_ignore_signals=False,
-    strip=False,
+    strip=False,  # Don't strip symbols (can trigger AV)
     upx=False,  # Disable UPX to avoid antivirus false positives
     upx_exclude=[],
     runtime_tmpdir=None,
@@ -64,4 +64,6 @@ exe = EXE(
     entitlements_file=None,
     icon='..\\assets\\pay-pass-logo.ico',  # Use relative path to repository assets folder
     version_file='version_info.txt',  # Windows version information
+    uac_admin=False,  # Don't request admin privileges
+    uac_uiaccess=False,  # Don't request UI access
 )
