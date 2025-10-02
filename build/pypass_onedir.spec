@@ -25,16 +25,13 @@ a = Analysis(
     hooksconfig={},
     runtime_hooks=[],
     excludes=[
-        # Exclude all unnecessary modules
+        # Exclude unnecessary modules that won't break the app
         'matplotlib', 'numpy', 'pandas', 'PIL', 'cv2',
         'PyQt5', 'PyQt6', 'PySide2', 'PySide6',
         'jupyter', 'IPython', 'notebook',
         'scipy', 'sklearn', 'tensorflow', 'torch',
-        'pytest', 'unittest', 'doctest',
+        'pytest', 'doctest',
         'pydoc', 'pdb', 'bdb', 'profile',
-        'sqlite3', 'ssl', 'http', 'urllib',
-        'email', 'xml', 'html', 'json',
-        'asyncio', 'concurrent', 'multiprocessing',
         'distutils', 'setuptools', 'pip'
     ],
     win_no_prefer_redirects=False,
