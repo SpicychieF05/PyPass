@@ -1,6 +1,6 @@
-# PyInstaller spec file for PyPass
-# This file configures how PyInstaller builds the executable
-# Optimized for minimal antivirus false positives
+# PyInstaller spec file for PyPass - ONEDIR MODE
+# This creates a directory with PyPass.exe and supporting files
+# Much less likely to trigger antivirus false positives
 
 block_cipher = None
 
@@ -25,7 +25,7 @@ a = Analysis(
     hooksconfig={},
     runtime_hooks=[],
     excludes=[
-        # Exclude all unnecessary modules to reduce binary size and AV triggers
+        # Exclude all unnecessary modules
         'matplotlib', 'numpy', 'pandas', 'PIL', 'cv2',
         'PyQt5', 'PyQt6', 'PySide2', 'PySide6',
         'jupyter', 'IPython', 'notebook',
@@ -48,23 +48,30 @@ pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
 exe = EXE(
     pyz,
     a.scripts,
-    a.binaries,
-    a.zipfiles,
-    a.datas,
     [],
+    exclude_binaries=True,  # KEY CHANGE: Don't bundle everything into one file
     name='PyPass',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
-    upx=False,  # Disable UPX to avoid antivirus false positives
-    upx_exclude=[],
-    runtime_tmpdir=None,
-    console=False,  # Set to False for windowed application
+    upx=False,  # UPX disabled
+    console=False,  # Windowed application
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='..\\assets\\pay-pass-logo.ico',  # Use relative path to repository assets folder
-    version_file='version_info.txt',  # Windows version information
+    icon='..\\assets\\pay-pass-logo.ico',
+    version_file='version_info.txt',
+)
+
+coll = COLLECT(
+    exe,
+    a.binaries,
+    a.zipfiles,
+    a.datas,
+    strip=False,
+    upx=False,
+    upx_exclude=[],
+    name='PyPass',
 )

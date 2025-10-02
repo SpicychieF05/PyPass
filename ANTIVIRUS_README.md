@@ -17,10 +17,28 @@ PyPass is built using PyInstaller, which packages Python applications into stand
 ## What We've Done to Minimize False Positives
 
 - ✅ **Disabled UPX compression**: The spec file now builds without UPX (`upx=False`)
+- ✅ **ONEDIR mode available**: Alternative build creates a folder distribution instead of single exe (recommended - much safer)
+- ✅ **Extensive module exclusions**: Removes all unnecessary Python modules to reduce binary size
 - ✅ **Clean source code**: All source is available in this repository for inspection
 - ✅ **Reproducible builds**: You can build from source yourself using the provided scripts
 - ✅ **SHA256 checksums**: Every release includes a checksum for verification
 - ✅ **Minimal dependencies**: Uses only Python standard library (tkinter, secrets, hashlib)
+- ✅ **Proper version info**: Windows version metadata embedded for legitimacy
+
+## Two Distribution Modes
+
+### Standard Mode (Single EXE)
+- Single `PyPass.exe` file
+- Self-contained, portable
+- **May trigger 5-10 AV vendors** due to self-extraction
+
+### Safe Mode (Folder Distribution) - **RECOMMENDED**
+- `PyPass` folder with exe + supporting files
+- More transparent to antivirus software
+- **Typically 0-3 AV detections**
+- Slightly larger download (~30MB vs 8MB)
+
+**For releases, we now provide BOTH options. Download the one that works best for you!**
 
 ## For Users: How to Verify Safety
 
