@@ -50,8 +50,8 @@ exe = EXE(
     name='PyPass',
     debug=False,
     bootloader_ignore_signals=False,
-    strip=False,
-    upx=False,  # UPX disabled
+    strip=False,  # Don't strip symbols (can trigger AV)
+    upx=False,  # UPX disabled - reduces AV false positives
     console=False,  # Windowed application
     disable_windowed_traceback=False,
     argv_emulation=False,
@@ -60,6 +60,8 @@ exe = EXE(
     entitlements_file=None,
     icon='..\\assets\\pay-pass-logo.ico',
     version_file='version_info.txt',
+    uac_admin=False,  # Don't request admin privileges
+    uac_uiaccess=False,  # Don't request UI access
 )
 
 coll = COLLECT(
@@ -67,8 +69,8 @@ coll = COLLECT(
     a.binaries,
     a.zipfiles,
     a.datas,
-    strip=False,
-    upx=False,
+    strip=False,  # Don't strip binaries
+    upx=False,  # Never compress with UPX
     upx_exclude=[],
     name='PyPass',
 )
