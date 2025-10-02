@@ -61,6 +61,6 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=None,  # Add icon path here if you have one: icon='icon.ico'
+    icon='..\\assets\\pay-pass-logo.ico',  # Use relative path to repository assets folder
     version_file='version_info.txt',  # Windows version information
 )
