@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+.venv-release/
+
+# PyInstaller build artifacts
+build/pypass/
+build/pypass_onedir/
+dist/
+*.spec.bak
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS
+Thumbs.db
+desktop.ini
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Logs
+*.log
+
+# Distribution packages
+*.egg-info/
+*.egg
+MANIFEST
+
+# Local development
+*.local
+.env
+.env.local
