@@ -184,6 +184,13 @@ echo Building PyPass executable...
 echo This may take several minutes...
 echo.
 
+REM Ensure icon file exists (recommended)
+if not exist "assets\pay-pass-logo.ico" (
+    echo %YELLOW%⚠ Warning: icon file assets\pay-pass-logo.ico not found.%NC%
+    echo   The build will continue but the executable will use the default icon.
+    echo   Place your .ico at assets\pay-pass-logo.ico to embed it into the EXE.
+)
+
 python -m PyInstaller build\pypass.spec --clean --noconfirm --log-level WARN
 set BUILD_RESULT=%errorlevel%
 
