@@ -6,6 +6,7 @@ Your previous build had **9/72 AV detections** on VirusTotal. This guide provide
 
 ## Solution: Two Distribution Methods
 
+
 ### Method 1: Ultra-Safe Mode (ONEDIR) - **RECOMMENDED ⭐**
 **Current AV Score: 5/72 detections** (down from 9/72!)
 

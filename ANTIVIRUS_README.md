@@ -39,6 +39,7 @@ PyPass is built using PyInstaller, which packages Python applications into stand
 - **Typically 3-5 AV detections** (down from 9!)
 - Larger download (~30MB)
 - Built with `build_ultra_safe.bat` for maximum AV compatibility
+- 
 
 **Current Status**: With our optimized build process (no UPX, no stripping, UAC disabled), we've achieved **5/72 VirusTotal detections** - a significant improvement!
 
