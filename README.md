@@ -14,6 +14,7 @@
 - [Security Features](#-security-features)
 - [Requirements](#-requirements)
 - [Quick Start](#-quick-start)
+- [Windows SmartScreen Notice](#-windows-smartscreen-notice)
 - [Building from Source](#️-building-from-source)
 - [User Manual](#-user-manual)
   - [Installation Guide](#installation-guide)
@@ -163,6 +164,27 @@ python main.py
 - **Internet**: Not required - works completely offline
 - **Dependencies**: None - everything included in the .exe file
 
+## 🛡️ Windows SmartScreen Notice
+
+> Important for first-time users on Windows
+
+When launching PyPass for the first time, Windows may display a blue SmartScreen warning:
+
+“Microsoft Defender SmartScreen prevented an unrecognized app from starting. Running this app might put your PC at risk.”
+
+This happens because the app is new and unsigned—not because it’s unsafe. PyPass is a fully offline application and does not access the internet.
+
+Follow these steps to proceed safely:
+
+1) Click “More info” in the SmartScreen dialog
+2) Click the “Run anyway” button
+3) PyPass will launch normally
+
+Tips:
+- If you downloaded the ZIP (safe folder) version, extract the ZIP first, then run `PyPass.exe` inside the extracted folder
+- For extra peace of mind, you can turn off Wi‑Fi before launching—PyPass works entirely offline
+- You can verify the download by comparing the `.sha256` checksum provided on the Releases page
+
 ## 🏗️ Building from Source
 
 ### Using Build Scripts (Recommended)
@@ -256,13 +278,7 @@ Option B — Portable single EXE
 3. Double‑click `PyPass.exe` to start
 
 First launch on Windows
-- Windows may show a SmartScreen warning for new/unsigned apps
-- Click "More info" → "Run anyway" after you verify the file came from the official release
-- You may see a Windows Defender popup stating: "Microsoft Defender SmartScreen prevented an unrecognized app from starting. Running this app might put your PC at risk." This is expected for new unsigned apps—tap "More info" and then "Run anyway" to continue
-- PyPass will not harm your PC/Laptop. It is a fully offline application and does not access the internet
-
-Recommendation (optional)
-- For extra peace of mind, unzip/extract and run `PyPass.exe` after turning off your Wi‑Fi—PyPass works entirely offline
+- See: [Windows SmartScreen Notice](#-windows-smartscreen-notice)
 
 Create a desktop shortcut (optional)
 - Right‑click `PyPass.exe` → Create shortcut
