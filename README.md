@@ -732,3 +732,30 @@ The modular design allows easy extension:
 - Ensure no other applications are accessing clipboard
 - Try the "Show/Hide" button to verify password generation is working
 - Copy function requires tkinter clipboard support
+
+---
+
+## From the Developer
+
+Thanks for trying PyPass! If it’s helpful, a star on the repo helps others find it.
+
+Developer: [@SpicychieF05](https://github.com/SpicychieF05)
+
+<div align="center">
+
+  <!-- GitHub Stars -->
+  <a href="https://github.com/SpicychieF05/PyPass/stargazers" title="Star this repo">
+    <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/SpicychieF05/PyPass?style=social" />
+  </a>
+
+  <!-- Total Downloads -->
+  <a href="https://github.com/SpicychieF05/PyPass/releases" title="Total downloads from GitHub Releases">
+    <img alt="GitHub all releases" src="https://img.shields.io/github/downloads/SpicychieF05/PyPass/total?label=downloads&logo=github" />
+  </a>
+
+  <!-- Visitor Counter -->
+  <a href="https://hits.seeyoufarm.com" title="Visitor counter by hits.seeyoufarm.com">
+    <img alt="Visitors" src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FSpicychieF05%2FPyPass&count_bg=%2379C83D&title_bg=%23555555&icon=github.svg&icon_color=%23E7E7E7&title=visitors&edge_flat=true" />
+  </a>
+
+</div>
