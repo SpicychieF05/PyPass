@@ -317,7 +317,7 @@ When you first launch PyPass, you'll see the main interface with several section
    - Copy to clipboard or save to file
    - See password strength assessment
 
-### Step-by-Step Usage
+### 🚶🏻‍➡️ Step-by-Step Usage 
 
 #### Creating Your First Password
 
