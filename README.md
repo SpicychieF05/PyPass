@@ -14,7 +14,7 @@
 - [Security Features](#-security-features)
 - [Requirements](#-requirements)
 - [Quick Start](#-quick-start)
-- [Windows SmartScreen Notice](#-windows-smartscreen-notice)
+- [Windows SmartScreen Notice](#windows-smartscreen-notice)
 - [Building from Source](#️-building-from-source)
 - [User Manual](#-user-manual)
   - [Installation Guide](#installation-guide)
@@ -278,7 +278,7 @@ Option B — Portable single EXE
 3. Double‑click `PyPass.exe` to start
 
 First launch on Windows
-- See: [Windows SmartScreen Notice](#-windows-smartscreen-notice)
+- See: [Windows SmartScreen Notice](#windows-smartscreen-notice)
 
 Create a desktop shortcut (optional)
 - Right‑click `PyPass.exe` → Create shortcut
