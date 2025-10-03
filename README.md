@@ -14,7 +14,7 @@
 - [Security Features](#-security-features)
 - [Requirements](#-requirements)
 - [Quick Start](#-quick-start)
-- [Windows SmartScreen Notice](#windows-smartscreen-notice)
+- [Windows SmartScreen Notice](#-windows-smartscreen-notice)
 - [Building from Source](#️-building-from-source)
 - [User Manual](#-user-manual)
   - [Installation Guide](#installation-guide)
@@ -164,6 +164,8 @@ python main.py
 - **Internet**: Not required - works completely offline
 - **Dependencies**: None - everything included in the .exe file
 
+<a id="-windows-smartscreen-notice"></a>
+<a id="windows-smartscreen-notice"></a>
 ## 🛡️ Windows SmartScreen Notice
 
 > Important for first-time users on Windows
@@ -278,7 +280,7 @@ Option B — Portable single EXE
 3. Double‑click `PyPass.exe` to start
 
 First launch on Windows
-- See: [Windows SmartScreen Notice](#windows-smartscreen-notice)
+- See: [Windows SmartScreen Notice](#-windows-smartscreen-notice)
 
 Create a desktop shortcut (optional)
 - Right‑click `PyPass.exe` → Create shortcut
