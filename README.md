@@ -33,8 +33,10 @@
 ## Download
 
 Get the latest Windows executable from the GitHub Releases page:
+[Download PyPass.zip (v1.0.0)](https://github.com/SpicychieF05/PyPass/releases/download/v1.0.0/PyPass.zip)  
+[Download PyPass.exe.sha256 (v1.0.0)](https://github.com/SpicychieF05/PyPass/releases/download/v1.0.0/PyPass.exe.sha256)
 
-[Download PyPass (latest release)](https://github.com/SpicychieF05/PyPass/releases/latest)
+**Note:** To use this software, you must download both files.
 
 ## Release — v1.0.0
 
