@@ -258,6 +258,11 @@ Option B — Portable single EXE
 First launch on Windows
 - Windows may show a SmartScreen warning for new/unsigned apps
 - Click "More info" → "Run anyway" after you verify the file came from the official release
+- You may see a Windows Defender popup stating: "Microsoft Defender SmartScreen prevented an unrecognized app from starting. Running this app might put your PC at risk." This is expected for new unsigned apps—tap "More info" and then "Run anyway" to continue
+- PyPass will not harm your PC/Laptop. It is a fully offline application and does not access the internet
+
+Recommendation (optional)
+- For extra peace of mind, unzip/extract and run `PyPass.exe` after turning off your Wi‑Fi—PyPass works entirely offline
 
 Create a desktop shortcut (optional)
 - Right‑click `PyPass.exe` → Create shortcut
