@@ -242,21 +242,32 @@ pyinstaller --onefile --windowed --name PyPass main.py
 
 **Download and Installation:**
 
-1. **Download the Application**
-   - Visit the [PyPass Releases page](https://github.com/SpicychieF05/PyPass/releases/latest)
-   - Download `PyPass.exe` from the latest release
-   - Save to a folder like `C:\Programs\PyPass\` or your Desktop
+You may see two download options on the Releases page. Choose either one:
 
-2. **First Launch**
-   - Double-click `PyPass.exe` to launch
-   - Windows may show a security warning - this is normal for new applications
-   - Click "More info" → "Run anyway" if Windows Defender SmartScreen appears
-   - The application will open in a new window
+Option A — Safe folder version (recommended on some antivirus setups)
+1. Download the ZIP package, typically named like `PyPass-<version>-Safe.zip`
+2. Right‑click the ZIP → Extract All… (or use your unzip tool)
+3. Open the extracted `PyPass` folder and run `PyPass.exe`
+  - Important: Keep `PyPass.exe` inside the extracted folder; the nearby files are required
 
-3. **Creating a Desktop Shortcut (Optional)**
-   - Right-click on `PyPass.exe`
-   - Select "Create shortcut"
-   - Move the shortcut to your Desktop or Start Menu
+Option B — Portable single EXE
+1. Download `PyPass.exe`
+2. Place it in a convenient location (e.g., `C:\Programs\PyPass\` or Desktop)
+3. Double‑click `PyPass.exe` to start
+
+First launch on Windows
+- Windows may show a SmartScreen warning for new/unsigned apps
+- Click "More info" → "Run anyway" after you verify the file came from the official release
+
+Create a desktop shortcut (optional)
+- Right‑click `PyPass.exe` → Create shortcut
+- Move the shortcut to your Desktop or Start Menu
+- For the ZIP/folder version, create the shortcut to the `PyPass.exe` inside the extracted folder
+
+Verify checksum (optional but recommended)
+- If a `.sha256` file is provided, compare it with your download:
+  - Open Command Prompt and run: `certutil -hashfile <path-to>\PyPass.exe SHA256`
+  - Confirm the printed hash matches the contents of the `.sha256` file
 
 **Antivirus Considerations:**
 - Some antivirus software may flag new executables as suspicious
